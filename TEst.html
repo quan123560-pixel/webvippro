@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Love Analyzer Pro | Backup Tire Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            background: #020617;
+            color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-rose {
+            background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-enter {
+            animation: slideUp 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(225, 29, 72, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(225, 29, 72, 0.6);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-8px);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+
+            75% {
+                transform: translateX(-4px);
+            }
+        }
+
+        .option-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            transform: translateX(8px);
+            background: rgba(225, 29, 72, 0.12);
+            border-color: #e11d48;
+        }
+
+        .option-btn:active {
+            transform: scale(0.97);
+        }
+
+        .option-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 0;
+            background: #e11d48;
+            transition: width 0.25s ease;
+        }
+
+        .option-btn:hover::after {
+            width: 100%;
+        }
+
+        .loading-progress {
+            background: linear-gradient(90deg, #fb7185, #e11d48, #fb7185);
+            background-size: 200% 100%;
+            animation: loadingShine 2s linear infinite;
+        }
+
+        @keyframes loadingShine {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .quit-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quit-btn:hover {
+            background: rgba(225, 29, 72, 0.15);
+            border-color: #e11d48;
+            color: #fda4af;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="p-4">
+    <div id="app-container" class="w-full max-w-xl relative z-10">
+        <!-- MÀN HÌNH CHÀO MỪNG -->
+        <div id="screen-start" class="glass p-10 rounded-[2.5rem] text-center card-enter">
+            <div class="mb-6 inline-flex p-4 bg-rose-500/10 rounded-full" style="animation: pulse-glow 2s infinite;">
+                <svg class="h-10 w-10 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </div>
+            <h1 class="text-4xl font-extrabold mb-2 tracking-tight">KỶ NGUYÊN <span class="text-gradient uppercase">LỐP
+                    DỰ PHÒNG</span></h1>
+            <p class="text-slate-400 mb-8 font-light">Phân tích thuật toán trái tim qua 31 câu hỏi.</p>
+            <div class="space-y-4">
+                <input type="text" id="user-name" placeholder="Danh tính của bạn..."
+                    class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-2xl outline-none focus:border-rose-500 text-center transition-all"
+                    maxlength="30" autocomplete="off">
+                <button id="btn-start"
+                    class="gradient-rose w-full py-4 rounded-2xl font-bold text-lg shadow-lg hover:scale-[1.02] transition-transform">
+                    Bắt đầu phân tích
+                </button>
+            </div>
+            <p class="mt-6 text-xs text-slate-500">by <span class="text-rose-400 font-semibold">Wuan</span></p>
+        </div>
+
+        <!-- MÀN HÌNH LOADING -->
+        <div id="screen-loading" class="hidden glass p-10 rounded-[2.5rem] text-center card-enter">
+            <h2 id="loading-msg" class="text-xl font-semibold mb-4">Đang quét cảm xúc...</h2>
+            <div class="w-full bg-slate-800 rounded-full h-2 mb-4 overflow-hidden">
+                <div id="loading-bar" class="loading-progress h-full rounded-full" style="width: 0%;"></div>
+            </div>
+            <p id="loading-sub" class="text-sm text-slate-400 italic"></p>
+        </div>
+
+        <!-- MÀN HÌNH KIỂM TRA -->
+        <div id="screen-quiz" class="hidden glass p-8 rounded-[2.5rem] card-enter">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <p class="text-[10px] font-black text-rose-500 uppercase">⚡ Hệ thống đang quét...</p>
+                    <h3 id="progress-label" class="text-xs text-slate-400 mt-1">Câu 1/30</h3>
+                </div>
+                <button id="btn-quit" class="quit-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Thoát
+                </button>
+                <div class="h-1.5 w-24 bg-slate-800 rounded-full overflow-hidden ml-2">
+                    <div id="progress-bar"
+                        class="h-full bg-gradient-to-r from-rose-500 to-rose-400 transition-all duration-500 ease-out w-0 rounded-full">
+                    </div>
+                </div>
+            </div>
+            <div id="question-box" class="min-h-[350px] flex flex-col">
+                <h2 id="q-text" class="text-xl font-semibold mb-8 leading-relaxed text-slate-100"></h2>
+                <div id="options-grid" class="grid gap-3 mt-auto"></div>
+            </div>
+        </div>
+
+        <!-- MÀN HÌNH KẾT QUẢ -->
+        <div id="screen-result" class="hidden glass p-10 rounded-[2.5rem] text-center card-enter">
+            <div
+                class="inline-block px-4 py-1 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 uppercase mb-4">
+                Phân tích hoàn tất
+            </div>
+            <h2 id="res-user-name" class="text-2xl font-bold mb-6 text-slate-200"></h2>
+            <div class="relative py-6 my-4">
+                <div id="res-level" class="text-5xl font-black tracking-tighter mb-2 relative z-10"></div>
+                <div id="res-score-ui" class="text-slate-500 text-xs font-mono relative z-10">CHỈ SỐ DỰ PHÒNG: 0%</div>
+            </div>
+            <p id="res-desc" class="text-slate-400 mt-6 mb-10 leading-relaxed font-light italic text-sm"></p>
+            <div class="grid grid-cols-2 gap-4">
+                <button id="btn-retry"
+                    class="bg-slate-800 hover:bg-slate-700 py-4 rounded-2xl font-bold transition-all active:scale-95">🔄
+                    LÀM LẠI</button>
+                <button id="btn-share"
+                    class="gradient-rose py-4 rounded-2xl font-bold shadow-lg shadow-rose-900/20 hover:scale-[1.02] transition-all active:scale-95">📤
+                    CHIA SẺ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // Cấu hình
+            const TOTAL_QUESTIONS = 30;
+            const BONUS_INDEX = TOTAL_QUESTIONS;
+            const MAX_SCORE_PER_Q = 25;
+            const MAX_TOTAL = TOTAL_QUESTIONS * MAX_SCORE_PER_Q;
+
+            // Pool câu hỏi
+            const BOOL_POOL = [
+                { q: "Họ đã từng nói 'Anh/Em yêu em/anh' trước?", type: "bool", opt: ["Đúng", "Sai"], pts: [0, 25] },
+                { q: "Họ có thường xuyên hủy kèo vào phút chót?", type: "bool", opt: ["Đúng", "Sai"], pts: [25, 0] },
+                { q: "Họ có từng giới thiệu bạn với đồng nghiệp không?", type: "bool", opt: ["Đúng", "Sai"], pts: [0, 25] },
+                { q: "Bạn có cảm thấy họ chỉ liên lạc khi cần điều gì đó?", type: "bool", opt: ["Đúng", "Sai"], pts: [25, 0] },
+                { q: "Họ có biết tên thú cưng của bạn không?", type: "bool", opt: ["Đúng", "Sai"], pts: [0, 25] },
+                { q: "Họ có từng nói 'Để em/anh suy nghĩ thêm' về mối quan hệ không?", type: "bool", opt: ["Đúng", "Sai"], pts: [25, 0] },
+                { q: "Họ có nhớ kỷ niệm đầu tiên hai bạn gặp nhau không?", type: "bool", opt: ["Đúng", "Sai"], pts: [0, 25] },
+                { q: "Họ có bao giờ thả tim ảnh người yêu cũ không?", type: "bool", opt: ["Đúng", "Sai"], pts: [25, 0] },
+                { q: "Họ có chủ động rủ bạn đi du lịch xa không?", type: "bool", opt: ["Đúng", "Sai"], pts: [0, 25] },
+                { q: "Bạn có thường là người duy nhất like story của họ không?", type: "bool", opt: ["Đúng", "Sai"], pts: [25, 0] }
+            ];
+
+            const KNOW_POOL = [
+                { q: "Họ có biết bạn hợp với mẫu người như thế nào không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn ghét nhất kiểu người ra sao không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn từng tổn thương trong quá khứ thế nào không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn thích uống gì vào buổi sáng không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn sợ nhất điều gì không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết ca sĩ/ban nhạc bạn yêu thích không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn thường đi ngủ lúc mấy giờ không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết mạng xã hội bạn dùng nhiều nhất không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn từng mơ ước làm nghề gì không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] },
+                { q: "Họ có biết bạn đang đọc cuốn sách nào gần đây không?", type: "know", opt: ["Biết", "Không biết"], pts: [0, 25] }
+            ];
+
+            const ORIGINAL_POOL = [
+                { q: "Họ có bao giờ chủ động gọi điện cho bạn mà không có lý do gì cụ thể?", opt: ["Mỗi ngày", "Thỉnh thoảng", "Khi họ buồn/say", "Không bao giờ"], pts: [0, 5, 20, 25] },
+                { q: "Vị trí của bạn trong Story của họ là gì?", opt: ["Ảnh đại diện / Nổi bật", "Được tag góc khuất", "Chỉ thấy bóng dáng", "Không bao giờ xuất hiện"], pts: [0, 10, 15, 25] },
+                { q: "Họ có lưu tên bạn kèm theo biệt danh đặc biệt không?", opt: ["Có, rất đặc biệt", "Có, nhưng bình thường", "Không (lưu họ tên)", "Không lưu số luôn"], pts: [0, 5, 15, 25] },
+                { q: "Khi bạn nhắn 'Em/Anh thấy mệt', họ phản ứng thế nào?", opt: ["Gọi điện ngay lập tức", "Hỏi thăm qua tin nhắn", "Thả biểu cảm rồi thôi", "Mấy tiếng sau mới rep"], pts: [0, 5, 15, 25] },
+                { q: "Bạn đã gặp bao nhiêu người trong gia đình họ?", opt: ["Hầu hết thành viên", "Chỉ anh chị em", "Chưa ai cả", "Họ bảo gia đình họ khó lắm"], pts: [0, 10, 25, 30] },
+                { q: "Họ có hay nhắc về người yêu cũ khi ở bên bạn không?", opt: ["Tuyệt đối không", "Kể như một kỷ niệm buồn", "Hay so sánh bạn với người cũ", "Vẫn còn giữ ảnh/quà công khai"], pts: [0, 10, 20, 30] },
+                { q: "Bạn thường là người kết thúc cuộc trò chuyện?", opt: ["Không, họ luôn nhắn cuối", "Thỉnh thoảng tôi kết thúc", "Thường là tôi", "Luôn là tôi, họ seen là hết"], pts: [0, 5, 15, 25] },
+                { q: "Khi bạn và hội bạn họ cùng rủ, họ chọn ai?", opt: ["Luôn chọn tôi", "Cố gắng gặp cả hai", "Tùy hôm", "Luôn chọn bạn họ"], pts: [0, 5, 15, 25] },
+                { q: "Họ có dùng từ 'Chúng ta' khi nói về năm sau không?", opt: ["Thường xuyên", "Đôi khi", "Rất hiếm", "Chưa bao giờ"], pts: [0, 5, 15, 25] },
+                { q: "Họ có biết món ăn bạn dị ứng nhất không?", opt: ["Biết rõ và luôn tránh", "Có vẻ biết nhưng hay quên", "Không biết", "Không biết tôi thích gì"], pts: [0, 5, 15, 25] }
+            ];
+
+            const state = {
+                name: '',
+                score: 0,
+                currentIdx: 0,
+                sessionPool: [],
+                answers: [],
+                finalPerson: '',
+                loadingInterval: null,
+                loadingMsgInterval: null
+            };
+
+            // Utility: Fisher-Yates shuffle
+            const shuffle = (arr) => {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            };
+
+            // Hiển thị màn hình duy nhất
+            function showOnlyScreen(screen) {
+                const screens = ['screen-start', 'screen-loading', 'screen-quiz', 'screen-result'];
+                screens.forEach(id => {
+                    document.getElementById(id).classList.add('hidden');
+                });
+                document.getElementById(screen).classList.remove('hidden');
+            }
+
+            // Hủy loading interval để tránh rò rỉ
+            function clearLoadingTimers() {
+                if (state.loadingInterval) {
+                    clearInterval(state.loadingInterval);
+                    state.loadingInterval = null;
+                }
+                if (state.loadingMsgInterval) {
+                    clearInterval(state.loadingMsgInterval);
+                    state.loadingMsgInterval = null;
+                }
+            }
+
+            // Loading màn hình
+            function showLoading(message, callback, duration = 5000) {
+                clearLoadingTimers(); // dọn dẹp trước đó nếu có
+                showOnlyScreen('screen-loading');
+                const bar = document.getElementById('loading-bar');
+                const msg = document.getElementById('loading-msg');
+                const sub = document.getElementById('loading-sub');
+                bar.style.width = '0%';
+                msg.textContent = message;
+
+                const subMessages = [
+                    "Phân tích tín hiệu từ trái tim...",
+                    "Giải mã ánh mắt...",
+                    "Quét tin nhắn cũ...",
+                    "Đếm số lần seen...",
+                    "Đo lường sự chân thành...",
+                    "Sắp xếp cảm xúc...",
+                    "Gần xong rồi..."
+                ];
+                let idx = 0;
+                sub.textContent = subMessages[0];
+
+                state.loadingMsgInterval = setInterval(() => {
+                    idx = (idx + 1) % subMessages.length;
+                    sub.textContent = subMessages[idx];
+                }, 700);
+
+                let progress = 0;
+                const step = 100 / (duration / 100);
+                state.loadingInterval = setInterval(() => {
+                    progress += step;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(state.loadingInterval);
+                        clearInterval(state.loadingMsgInterval);
+                        state.loadingInterval = null;
+                        state.loadingMsgInterval = null;
+                        bar.style.width = '100%';
+                        setTimeout(() => {
+                            showOnlyScreen('screen-start'); // tạm ẩn, callback sẽ hiển thị màn hình phù hợp
+                            if (callback) callback();
+                        }, 300);
+                    }
+                    bar.style.width = progress + '%';
+                }, 100);
+            }
+
+            // Bắt đầu quiz
+            function initQuiz() {
+                const nameInput = document.getElementById('user-name');
+                const name = nameInput.value.trim();
+                if (!name) {
+                    nameInput.focus();
+                    nameInput.style.borderColor = '#ef4444';
+                    nameInput.style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        nameInput.style.borderColor = '';
+                        nameInput.style.animation = '';
+                    }, 600);
+                    return;
+                }
+
+                state.name = name;
+                state.score = 0;
+                state.currentIdx = 0;
+                state.answers = [];
+                state.finalPerson = '';
+
+                // Tạo pool 30 câu
+                const bools = shuffle(BOOL_POOL).slice(0, 10);
+                const knows = shuffle(KNOW_POOL).slice(0, 10);
+                const norms = shuffle(ORIGINAL_POOL).slice(0, 10);
+                state.sessionPool = shuffle([...bools, ...knows, ...norms]);
+
+                // Hiển thị loading trước khi vào quiz
+                showLoading('Đang khởi động hệ thống...', () => {
+                    showOnlyScreen('screen-quiz');
+                    renderQuestion();
+                }, 5000);
+            }
+
+            function renderQuestion() {
+                const container = document.getElementById('options-grid');
+                container.innerHTML = '';
+
+                if (state.currentIdx === BONUS_INDEX) {
+                    renderFinalQuestion();
+                    return;
+                }
+
+                const q = state.sessionPool[state.currentIdx];
+                document.getElementById('progress-label').textContent = `Câu ${state.currentIdx + 1}/${TOTAL_QUESTIONS}`;
+                document.getElementById('progress-bar').style.width = `${(state.currentIdx / TOTAL_QUESTIONS) * 100}%`;
+                document.getElementById('q-text').textContent = q.q;
+
+                if (q.type === 'text') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'w-full bg-slate-900/60 border border-slate-700 p-4 rounded-xl outline-none focus:border-rose-500 text-slate-200';
+                    input.placeholder = 'Nhập suy nghĩ...';
+                    const btn = document.createElement('button');
+                    btn.className = 'gradient-rose w-full py-4 rounded-xl font-bold mt-4';
+                    btn.textContent = 'TIẾP THEO';
+                    btn.onclick = () => {
+                        const val = input.value.trim();
+                        if (!val) {
+                            input.style.borderColor = '#ef4444';
+                            return;
+                        }
+                        state.answers.push({ q: q.q, ans: val, pts: 0 });
+                        advanceQuestion();
+                    };
+                    container.appendChild(input);
+                    container.appendChild(btn);
+                } else {
+                    q.opt.forEach((opt, i) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn w-full text-left p-5 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-slate-300 text-sm font-medium';
+                        btn.innerHTML = `<span class="text-rose-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${opt}`;
+                        btn.onclick = () => {
+                            const pts = q.pts[i];
+                            state.score += pts;
+                            state.answers.push({ q: q.q, ans: opt, pts });
+                            btn.style.transform = 'scale(0.95)';
+                            setTimeout(() => advanceQuestion(), 150);
+                        };
+                        container.appendChild(btn);
+                    });
+                }
+            }
+
+            function renderFinalQuestion() {
+                document.getElementById('progress-label').textContent = 'Câu hỏi đặc biệt';
+                document.getElementById('progress-bar').style.width = '100%';
+                document.getElementById('q-text').textContent = '🔥 Người mà bạn đang nghĩ tới trong suốt bài kiểm tra là ai?';
+                const container = document.getElementById('options-grid');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'final-person';
+                input.className = 'w-full bg-slate-900/60 border border-slate-700 p-4 rounded-xl outline-none focus:border-rose-500 text-center text-slate-200';
+                input.placeholder = 'Tên hoặc biệt danh';
+                const btn = document.createElement('button');
+                btn.className = 'gradient-rose w-full py-4 rounded-xl font-bold mt-4 text-lg';
+                btn.textContent = 'XÁC NHẬN & XEM KẾT QUẢ';
+                btn.onclick = () => {
+                    const person = input.value.trim();
+                    if (!person) {
+                        input.style.borderColor = '#ef4444';
+                        return;
+                    }
+                    state.finalPerson = person;
+                    state.answers.push({ q: 'Người đó là ai?', ans: person, pts: 0 });
+                    showLoading('Đang tổng hợp kết quả...', showResult, 5000);
+                };
+                container.appendChild(input);
+                container.appendChild(btn);
+            }
+
+            function advanceQuestion() {
+                state.currentIdx++;
+                if (state.currentIdx < TOTAL_QUESTIONS) {
+                    renderQuestion();
+                } else if (state.currentIdx === BONUS_INDEX) {
+                    renderFinalQuestion();
+                }
+            }
+
+            function showResult() {
+                const percent = Math.min(Math.round((state.score / MAX_TOTAL) * 100), 100);
+                let level, desc, color;
+                if (percent <= 20) {
+                    level = 'KHÔNG PHẢI LỐP'; color = '#10b981';
+                    desc = `${state.name} à, bạn là duy nhất!`;
+                } else if (percent <= 40) {
+                    level = 'LỐP BTH'; color = '#3b82f6';
+                    desc = 'Bạn là lựa chọn an toàn.';
+                } else if (percent <= 60) {
+                    level = 'LỐP BỀN'; color = '#f59e0b';
+                    desc = 'Bạn bền bỉ đến mức họ không nghĩ bạn sẽ rời đi.';
+                } else if (percent <= 80) {
+                    level = 'LỐP TRƯỞNG'; color = '#ef4444';
+                    desc = 'Bạn tự điều phối cảm xúc. Hãy tỉnh táo!';
+                } else {
+                    level = 'LỐP XE TĂNG'; color = '#a855f7';
+                    desc = 'Vô đối! Bạn là cả cái xe cứu hộ.';
+                }
+
+                document.getElementById('res-user-name').textContent = `Kết quả của ${state.name}`;
+                const levelEl = document.getElementById('res-level');
+                levelEl.textContent = level;
+                levelEl.style.color = color;
+                document.getElementById('res-score-ui').textContent = `CHỈ SỐ DỰ PHÒNG: ${percent}%`;
+                document.getElementById('res-desc').textContent = desc;
+                showOnlyScreen('screen-result');
+
+                // Gửi dữ liệu về Google Sheets (thay endpoint của bạn)
+                const endpoint = 'https://script.google.com/macros/s/.../exec'; // 👈 THAY URL Ở ĐÂY
+                if (endpoint && !endpoint.includes('...')) {
+                    fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: state.name,
+                            level,
+                            score: percent,
+                            finalPerson: state.finalPerson,
+                            timestamp: new Date().toISOString(),
+                            answers: state.answers
+                        })
+                    }).catch(e => console.log('Gửi server thất bại'));
+                }
+            }
+
+            function resetQuiz() {
+                clearLoadingTimers();
+                state.sessionPool = [];
+                showOnlyScreen('screen-start');
+                document.getElementById('user-name').value = '';
+                document.getElementById('progress-bar').style.width = '0%';
+                document.getElementById('progress-label').textContent = 'Câu 1/30';
+                document.getElementById('options-grid').innerHTML = '';
+            }
+
+            // Event listeners
+            document.getElementById('btn-start').addEventListener('click', initQuiz);
+            document.getElementById('btn-retry').addEventListener('click', resetQuiz);
+            document.getElementById('btn-quit').addEventListener('click', () => {
+                if (confirm('Bạn có chắc muốn thoát? Tiến trình sẽ không được lưu.')) {
+                    resetQuiz();
+                }
+            });
+            document.getElementById('btn-share').addEventListener('click', () => {
+                const level = document.getElementById('res-level').textContent;
+                const text = `🚗 Tôi vừa nhận kết quả "${level}" trong bài kiểm tra Lốp Dự Phòng!`;
+                if (navigator.share) {
+                    navigator.share({ title: 'Backup Tire Test', text, url: window.location.href });
+                } else {
+                    navigator.clipboard.writeText(text + ' ' + window.location.href)
+                        .then(() => alert('Đã sao chép link chia sẻ!'))
+                        .catch(() => alert(text));
+                }
+            });
+            document.getElementById('user-name').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') initQuiz();
+            });
+
+            // Khởi tạo màn hình start
+            showOnlyScreen('screen-start');
+        })();
+    </script>
+</body>
+
+</html>
